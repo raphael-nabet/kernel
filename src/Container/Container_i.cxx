@@ -1112,6 +1112,11 @@ void EffectiveOverrideEnvironment( const Engines::FieldsDict& env )
   }
 }
 
+#if defined(__APPLE__)
+#include <crt_externs.h>
+#define environ (*_NSGetEnviron())
+#endif
+
 std::vector< std::pair<std::string,std::string> > GetOSEnvironment()
 {
   std::vector< std::pair<std::string,std::string> > ret;
