@@ -57,8 +57,11 @@ BaseTraceCollector* SALOMETraceCollector::instance()
       if (_singleton == 0)                     // another thread may have got
         {                                      // the lock after the first test
           BaseTraceCollector* myInstance = new SALOMETraceCollector();
+
 #if defined(__APPLE__)
-          _sem = dispatch_semaphore_create(0); // to wait until run thread is initialize
+          if (_sem)                            // semaphore of a previous instance
+            dispatch_release(_sem);
+          _sem = dispatch_semaphore_create(0); // to wait until run thread is initialized
 #else
           sem_init(&_sem,0,0); // to wait until run thread is initialized
 #endif
